@@ -1,0 +1,35 @@
+.form {
+  display: grid;
+  gap: var(--e-4);
+}
+
+.trap {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.serverError {
+  padding: var(--e-3);
+  border: 2px solid var(--alerte);
+  color: var(--alerte);
+  font-weight: 500;
+}
+
+.sent {
+  display: grid;
+  justify-items: start;
+  gap: var(--e-3);
+  padding: var(--e-4);
+  border: 2px solid var(--acier);
+  background: var(--blanc);
+}
+
+.sentTitle {
+  font-family: var(--font-titre);
+  font-size: var(--t-2);
+  font-weight: 700;
+  line-height: 1.1;
+}

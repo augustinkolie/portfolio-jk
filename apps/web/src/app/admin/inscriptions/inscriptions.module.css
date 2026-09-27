@@ -1,0 +1,44 @@
+.item {
+  display: grid;
+  gap: var(--e-2);
+  padding: var(--e-3) 0;
+  border-bottom: var(--bordure);
+}
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--e-2) var(--e-3);
+}
+
+.unread {
+  font-weight: 700;
+}
+
+.contact {
+  font-weight: 500;
+}
+
+.message {
+  padding: var(--e-2) var(--e-3);
+  border-left: 2px solid var(--acier);
+  background: var(--blanc);
+  white-space: pre-line;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--e-2) var(--e-3);
+}
+
+.statusSelect select {
+  min-height: 3rem;
+  padding: 0 var(--e-3);
+  border: var(--bordure-forte);
+  border-radius: var(--rayon-champ);
+  background: var(--blanc);
+  font-weight: 500;
+}

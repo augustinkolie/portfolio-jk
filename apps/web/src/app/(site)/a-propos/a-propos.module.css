@@ -1,0 +1,129 @@
+.intro {
+  padding-block: var(--e-4) var(--section);
+}
+
+.introContent {
+  display: grid;
+  gap: var(--e-4);
+  padding-block: var(--e-4) var(--e-5);
+}
+
+.text {
+  display: grid;
+  gap: var(--e-3);
+  font-size: var(--t-1);
+  line-height: 1.45;
+}
+
+.body {
+  display: grid;
+  gap: var(--e-6);
+  padding-bottom: var(--section);
+}
+
+.leader {
+  display: grid;
+  gap: var(--e-3);
+  align-content: start;
+}
+
+.portrait {
+  width: 100%;
+  max-width: 22rem;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border: 2px solid var(--acier);
+}
+
+.portrait :global(img) {
+  object-position: 50% 20%;
+}
+
+.leaderText {
+  display: grid;
+  gap: var(--e-2);
+}
+
+.leaderName {
+  font-size: var(--t-3);
+}
+
+.leaderRole {
+  font-size: var(--t-1);
+  color: var(--texte-2);
+}
+
+/* Grand écran : frise à gauche, fiche du dirigeant à droite, qui reste visible au défilement. */
+@media (min-width: 64rem) {
+  .body {
+    grid-template-columns: 1fr 22rem;
+    align-items: start;
+  }
+
+  .leader {
+    grid-column: 2;
+    grid-row: 1;
+    position: sticky;
+    top: var(--e-4);
+  }
+
+  .timelineSection {
+    grid-column: 1;
+    grid-row: 1;
+  }
+}
+
+/* Frise verticale : un axe continu, un repère numéroté par étape. */
+.timeline {
+  --repere: 2.25rem;
+  position: relative;
+  display: grid;
+  gap: var(--e-5);
+  margin: var(--e-5) 0 0;
+  padding: 0 0 0 calc(var(--repere) + var(--e-4));
+  list-style: none;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--repere) / 2);
+  border-left: 1px solid var(--acier);
+}
+
+.step {
+  position: relative;
+  display: grid;
+  gap: var(--e-1);
+}
+
+.marker {
+  position: absolute;
+  top: 0;
+  left: calc(-1 * (var(--repere) + var(--e-4)));
+  display: grid;
+  place-items: center;
+  width: var(--repere);
+  height: var(--repere);
+  border: 1px solid var(--acier);
+  background: var(--surface);
+  font-weight: 500;
+}
+
+.period {
+  font-family: var(--font-titre);
+  font-size: var(--t-2);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.title {
+  font-size: var(--t-1);
+}
+
+.meta {
+  font-size: var(--t--1);
+  color: var(--texte-2);
+}

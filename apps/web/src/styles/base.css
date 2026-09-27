@@ -1,0 +1,143 @@
+/* Réinitialisation minimale et styles typographiques de base. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: var(--e-6);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  min-height: 100svh;
+  background: var(--surface);
+  color: var(--texte);
+  font-family: var(--font-texte);
+  font-size: var(--t-0);
+  font-weight: 400;
+  line-height: var(--interligne-texte);
+  font-kerning: normal;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+svg,
+video,
+picture {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-titre);
+  font-weight: 700;
+  line-height: var(--interligne-titre);
+  letter-spacing: -0.005em;
+  text-wrap: balance;
+  overflow-wrap: break-word;
+}
+
+h1 {
+  font-size: var(--t-4);
+}
+
+h2 {
+  font-size: var(--t-3);
+}
+
+h3 {
+  font-size: var(--t-2);
+  font-weight: 600;
+}
+
+h4 {
+  font-size: var(--t-1);
+  font-weight: 600;
+}
+
+/* Longueur de ligne des textes (§3.4). Les listes de mise en page (grilles, cotes) n'y sont pas soumises :
+   seuls les textes qu'elles contiennent le sont. */
+p,
+dd,
+blockquote {
+  max-width: var(--mesure);
+  text-wrap: pretty;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+strong {
+  font-weight: 500;
+}
+
+/* Chiffres techniques : chasse fixe, pas de monospace (§3.4). */
+.num,
+time,
+data {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Focus clavier : anneau double acier + signal, visible sur béton comme sur cyanotype. */
+:focus-visible {
+  outline: 2px solid transparent; /* conservé en mode contraste élevé Windows */
+  box-shadow: var(--focus-anneau);
+}
+
+::selection {
+  background: var(--cyanotype);
+  color: var(--trait-plan);
+}
+
+/* Masqué visuellement, lu par les lecteurs d'écran. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}

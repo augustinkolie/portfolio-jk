@@ -1,0 +1,87 @@
+.wrap {
+  padding-block: var(--e-4) var(--section);
+}
+
+.grid {
+  display: grid;
+  gap: var(--e-5);
+}
+
+.figure {
+  --cote-v: 2.5rem; /* place occupée par la cote verticale */
+  display: grid;
+  gap: var(--e-2);
+}
+
+/* La cote horizontale mesure la photo, pas la photo + la cote verticale. */
+.dimTop {
+  max-width: calc(100% - var(--cote-v));
+}
+
+.photoRow {
+  display: flex;
+  gap: var(--e-2);
+}
+
+.photo {
+  flex: 1;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+}
+
+.dimSide {
+  flex: none;
+  width: calc(var(--cote-v) - var(--e-2));
+}
+
+.caption {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: var(--e-3);
+  font-size: var(--t--1);
+  color: var(--texte-2);
+}
+
+.caption a {
+  font-weight: 500;
+  color: var(--texte);
+}
+
+.text {
+  display: grid;
+  align-content: end;
+  gap: var(--e-4);
+}
+
+.name {
+  font-size: var(--t-5);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+}
+
+.tagline {
+  font-size: var(--t-1);
+  line-height: 1.35;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--e-3) var(--e-4);
+}
+
+@media (min-width: 48rem) {
+  .photo {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+@media (min-width: 64rem) {
+  .grid {
+    grid-template-columns: 7fr 5fr;
+    align-items: end;
+    gap: var(--e-6);
+  }
+}

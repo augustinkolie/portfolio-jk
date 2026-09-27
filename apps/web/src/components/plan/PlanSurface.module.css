@@ -1,0 +1,31 @@
+.surface {
+  position: relative;
+  isolation: isolate;
+  background-color: var(--cyanotype);
+  color: var(--trait-plan);
+}
+
+/* Grain du papier de tirage : bruit fractal SVG, 0,5 Ko inline. */
+.surface::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.16;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+/* Quadrillage de tirage : un trait fin tous les 8 rem, discret. */
+.grid::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(to right, rgb(242 245 248 / 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(242 245 248 / 0.07) 1px, transparent 1px);
+  background-size: 8rem 8rem;
+  background-position: calc(var(--gouttiere) - 1px) -1px;
+  pointer-events: none;
+}

@@ -1,0 +1,64 @@
+.manager {
+  display: grid;
+  gap: var(--e-4);
+}
+
+.ok,
+.err {
+  padding: var(--e-2) var(--e-3);
+  border: 2px solid var(--acier);
+  font-weight: 500;
+  max-width: none;
+}
+
+.err {
+  border-color: var(--alerte);
+  color: var(--alerte);
+}
+
+.current {
+  display: grid;
+  justify-items: start;
+  gap: var(--e-2);
+  max-width: 36rem;
+}
+
+.video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: var(--bordure-forte);
+  background: var(--acier);
+}
+
+.progress {
+  display: grid;
+  gap: var(--e-2);
+  padding: var(--e-3);
+  border: var(--bordure-forte);
+  font-weight: 500;
+}
+
+.progress progress {
+  width: 100%;
+  height: 0.6rem;
+  accent-color: var(--acier);
+}
+
+.drop {
+  display: grid;
+  justify-items: center;
+  gap: var(--e-1);
+  padding: var(--e-5) var(--e-3);
+  border: 2px dashed var(--acier);
+  background: var(--surface);
+  text-align: center;
+  cursor: pointer;
+}
+
+.drop:focus-within {
+  box-shadow: var(--focus-anneau);
+}
+
+.dropTitle {
+  font-weight: 500;
+}

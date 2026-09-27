@@ -1,0 +1,237 @@
+generator client {
+  provider            = "prisma-client"
+  output              = "../src/generated/prisma"
+  moduleFormat        = "esm"
+  importFileExtension = "js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id                  String         @id @default(cuid())
+  email               String         @unique
+  passwordHash        String
+  name                String
+  // Verrouillage temporaire après 5 échecs de connexion (cahier des charges 5.1)
+  failedLoginAttempts Int            @default(0)
+  lockedUntil         DateTime?
+  refreshTokens       RefreshToken[]
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+}
+
+// Un enregistrement par session (appareil). Seule l'empreinte SHA-256 du jeton est stockée.
+model RefreshToken {
+  id        String    @id @default(cuid())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+}
+
+model Category {
+  id         String      @id @default(cuid())
+  name       String
+  slug       String      @unique
+  order      Int         @default(0)
+  projects   Project[]
+  expertises Expertise[]
+}
+
+model Project {
+  id          String        @id @default(cuid())
+  title       String
+  slug        String        @unique
+  summary     String
+  description String // HTML nettoyé côté serveur
+  client      String?
+  location    String
+  year        Int
+  duration    String?
+  size        String? // ex. "2 400 m²", "12 km"
+  budget      String?
+  showBudget  Boolean       @default(false)
+  status      ProjectStatus @default(DELIVERED)
+  featured    Boolean       @default(false)
+  published   Boolean       @default(false)
+  order       Int           @default(0)
+  category    Category      @relation(fields: [categoryId], references: [id])
+  categoryId  String
+  media       Media[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([published, categoryId, year])
+}
+
+model Media {
+  id        String    @id @default(cuid())
+  // Un média appartient à un projet, une formation ou un plan (ou à aucun : photo de profil).
+  project   Project?  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String?
+  course    Course?   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseId  String?
+  plan      Plan?     @relation(fields: [planId], references: [id], onDelete: Cascade)
+  planId    String?
+  alt       String
+  kind      MediaKind @default(GALLERY)
+  order     Int       @default(0)
+  width     Int
+  height    Int
+  blurData  String // placeholder base64 très léger
+  variants  Json // URLs des tailles générées (avif + webp)
+  createdAt DateTime  @default(now())
+
+  @@index([projectId, order])
+  @@index([courseId, order])
+  @@index([planId, order])
+}
+
+// ─── Formations (ajout client) ────────────────────────────────────────────────
+
+model Course {
+  id          String       @id @default(cuid())
+  title       String
+  slug        String       @unique
+  /// Logiciel enseigné : « AutoCAD », « Revit », « Robot Structural Analysis »…
+  software    String
+  level       CourseLevel  @default(BEGINNER)
+  format      CourseFormat @default(IN_PERSON)
+  summary     String
+  description String // HTML nettoyé côté serveur
+  duration    String? // « 40 heures », « 4 semaines »
+  location    String? // lieu des cours en présentiel
+  price       String? // « 1 500 000 GNF »
+  nextSession String? // texte libre : « Lundi 3 novembre 2026, 18 h »
+  // Extrait vidéo hébergé sur le site (clé de stockage, jamais d'URL en base)
+  teaserKey   String?
+  teaserMime  String?
+  teaserSize  Int?
+  published   Boolean      @default(false)
+  order       Int          @default(0)
+  media       Media[]
+  enrollments Enrollment[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([published, order])
+}
+
+model Enrollment {
+  id        String           @id @default(cuid())
+  course    Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseId  String
+  name      String
+  phone     String
+  email     String?
+  message   String?
+  status    EnrollmentStatus @default(NEW)
+  createdAt DateTime         @default(now())
+
+  @@index([status, createdAt])
+}
+
+// ─── Plans de conception (ajout client) ──────────────────────────────────────
+
+model Plan {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  /// « Villa », « Duplex », « Immeuble »…
+  planType    String
+  levels      String? // « R+1 »
+  surface     String? // « 180 m² »
+  bedrooms    Int?
+  summary     String
+  description String // HTML nettoyé côté serveur
+  published   Boolean  @default(false)
+  order       Int      @default(0)
+  media       Media[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([published, order])
+}
+
+model Experience {
+  id           String  @id @default(cuid())
+  period       String
+  title        String
+  organization String?
+  location     String?
+  description  String?
+  order        Int     @default(0)
+}
+
+model Expertise {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String
+  order       Int       @default(0)
+  // Ajout : relie le domaine aux projets de la catégorie correspondante (pages 4.1 et 4.4).
+  category    Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  categoryId  String?
+}
+
+model ContactMessage {
+  id          String        @id @default(cuid())
+  name        String
+  phone       String
+  email       String?
+  projectType String?
+  location    String?
+  message     String
+  status      MessageStatus @default(NEW)
+  createdAt   DateTime      @default(now())
+
+  @@index([status, createdAt])
+}
+
+model Setting {
+  key   String @id
+  value Json
+}
+
+enum ProjectStatus {
+  DELIVERED
+  IN_PROGRESS
+}
+
+enum MediaKind {
+  COVER
+  GALLERY
+  BEFORE
+  AFTER
+}
+
+enum CourseLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+enum CourseFormat {
+  IN_PERSON
+  LIVE_ONLINE
+  BOTH
+}
+
+enum EnrollmentStatus {
+  NEW
+  CONTACTED
+  ENROLLED
+  CANCELLED
+}
+
+enum MessageStatus {
+  NEW
+  READ
+  HANDLED
+}

@@ -1,0 +1,82 @@
+.page {
+  padding-block: var(--e-5) var(--section);
+}
+
+.lead {
+  margin-block: var(--e-3) var(--e-5);
+  font-size: var(--t-1);
+  line-height: 1.4;
+}
+
+.steps {
+  display: grid;
+  gap: var(--e-3);
+  margin: 0 0 var(--e-6);
+  padding: 0;
+  list-style: none;
+}
+
+.steps li {
+  position: relative;
+  display: grid;
+  gap: var(--e-1);
+  padding-top: var(--e-3);
+  border-top: var(--bordure-forte);
+}
+
+.number {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateY(-50%);
+  padding-right: var(--e-2);
+  background: var(--surface);
+  font-family: var(--font-titre);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.stepTitle {
+  font-family: var(--font-titre);
+  font-size: var(--t-1);
+  font-weight: 600;
+}
+
+.stepText {
+  color: var(--texte-2);
+}
+
+.grid {
+  display: grid;
+  gap: var(--e-5) var(--e-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.empty {
+  padding: var(--e-4);
+  border: 1px dashed var(--acier);
+  color: var(--texte-2);
+}
+
+@media (min-width: 48rem) {
+  .steps {
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: var(--e-4);
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 64rem) {
+  .steps {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

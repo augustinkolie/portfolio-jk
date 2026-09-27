@@ -1,0 +1,46 @@
+.section {
+  padding-block: var(--section);
+}
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--e-3);
+  margin-bottom: var(--e-5);
+}
+
+.mosaic {
+  display: grid;
+  gap: var(--e-5) var(--e-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mosaic > li {
+  display: flex;
+}
+
+.mosaic > li > * {
+  flex: 1;
+}
+
+@media (min-width: 48rem) {
+  .mosaic {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-flow: dense;
+  }
+}
+
+@media (min-width: 64rem) {
+  .mosaic {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Grande tuile : deux colonnes sur trois. */
+  .large {
+    grid-column: span 2;
+  }
+}

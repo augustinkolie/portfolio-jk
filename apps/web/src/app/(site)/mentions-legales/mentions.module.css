@@ -1,0 +1,14 @@
+.page {
+  display: grid;
+  gap: var(--e-5);
+  padding-block: var(--e-5) var(--section);
+}
+
+.page section {
+  display: grid;
+  gap: var(--e-3);
+}
+
+.page h2 {
+  font-size: var(--t-2);
+}

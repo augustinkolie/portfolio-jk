@@ -1,0 +1,88 @@
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-3);
+}
+
+.media {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+}
+
+.large .media {
+  aspect-ratio: auto;
+  flex: 1;
+  min-height: 18rem;
+}
+
+.noPhoto {
+  width: 100%;
+  height: 100%;
+  background:
+    linear-gradient(to top right, transparent calc(50% - 0.5px), var(--beton-fonce) 50%, transparent calc(50% + 0.5px)),
+    var(--beton);
+  border: var(--bordure);
+}
+
+.media :global(img) {
+  transition: transform 400ms var(--courbe);
+}
+
+.card:hover .media :global(img) {
+  transform: scale(1.02);
+}
+
+.caption {
+  display: grid;
+  gap: var(--e-1);
+}
+
+.title {
+  font-size: var(--t-1);
+  font-weight: 600;
+}
+
+.large .title {
+  font-size: var(--t-2);
+}
+
+/* Le lien couvre toute la tuile (photo comprise) : une seule cible, un seul arrêt clavier. */
+.link {
+  text-decoration: none;
+}
+
+.link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.link:focus-visible {
+  box-shadow: none;
+}
+
+.link:focus-visible::after {
+  box-shadow: var(--focus-anneau);
+}
+
+.card:hover .link {
+  text-decoration: underline;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: var(--e-3);
+  font-size: var(--t--1);
+  color: var(--texte-2);
+}
+
+.meta span + span {
+  padding-left: var(--e-3);
+  border-left: var(--bordure);
+}
+
+.summary {
+  margin-top: var(--e-1);
+}

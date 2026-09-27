@@ -1,0 +1,20 @@
+.picture {
+  display: block;
+  background: var(--beton-fonce);
+}
+
+.img {
+  width: 100%;
+  height: auto;
+}
+
+/* Le conteneur fixe le ratio (aspect-ratio) ; la photo le remplit en étant recadrée. */
+.cover,
+.cover .img {
+  width: 100%;
+  height: 100%;
+}
+
+.cover .img {
+  object-fit: cover;
+}

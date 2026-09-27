@@ -1,0 +1,18 @@
+.figure {
+  display: grid;
+  gap: var(--e-2);
+}
+
+.video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 2px solid var(--acier);
+  background: var(--acier);
+  object-fit: contain;
+}
+
+.caption {
+  font-size: var(--t--1);
+  color: var(--texte-2);
+}

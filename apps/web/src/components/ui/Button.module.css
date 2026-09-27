@@ -1,0 +1,92 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--e-2);
+  min-height: 3rem; /* cible tactile ≥ 48px */
+  padding: var(--e-2) var(--e-4);
+  border: 1px solid transparent;
+  border-radius: var(--rayon);
+  font-family: var(--font-texte);
+  font-size: var(--t-0);
+  font-weight: 500;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  transition:
+    background-color var(--duree-ui) var(--courbe),
+    color var(--duree-ui) var(--courbe),
+    border-color var(--duree-ui) var(--courbe);
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.block {
+  display: flex;
+  width: 100%;
+}
+
+/* Jaune signal : uniquement pour « Demander un devis ». Texte acier = 6:1. */
+.devis {
+  background: var(--signal);
+  border-color: var(--acier);
+  color: var(--acier);
+}
+
+.devis:hover:not(:disabled) {
+  background: var(--acier);
+  color: var(--signal);
+}
+
+.plein {
+  background: var(--acier);
+  color: var(--blanc);
+}
+
+.plein:hover:not(:disabled) {
+  background: var(--cyanotype);
+}
+
+.trait {
+  background: transparent;
+  border-color: var(--acier);
+  color: var(--acier);
+}
+
+.trait:hover:not(:disabled) {
+  background: var(--acier);
+  color: var(--blanc);
+}
+
+.plan {
+  background: transparent;
+  border-color: var(--trait-plan);
+  color: var(--trait-plan);
+}
+
+.plan:hover:not(:disabled) {
+  background: var(--trait-plan);
+  color: var(--cyanotype);
+}
+
+.actionLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-2);
+  min-height: 3rem;
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+}
+
+.actionLink svg {
+  transition: transform var(--duree-ui) var(--courbe);
+}
+
+.actionLink:hover svg {
+  transform: translateX(0.2em);
+}

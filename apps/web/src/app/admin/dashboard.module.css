@@ -1,0 +1,29 @@
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  margin: 0 0 var(--e-5);
+  border: var(--bordure-forte);
+  background: var(--blanc);
+}
+
+.stats > div {
+  padding: var(--e-3) var(--e-4);
+  border-right: var(--bordure);
+}
+
+.stats > div:last-child {
+  border-right: 0;
+}
+
+.stats dt {
+  font-size: var(--t--1);
+  color: var(--texte-2);
+}
+
+.stats dd {
+  margin: 0;
+  font-family: var(--font-titre);
+  font-size: var(--t-3);
+  font-weight: 700;
+  line-height: 1.1;
+}

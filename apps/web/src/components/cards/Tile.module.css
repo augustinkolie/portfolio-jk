@@ -1,0 +1,32 @@
+.media {
+  position: relative;
+}
+
+.badge {
+  position: absolute;
+  left: var(--e-2);
+  bottom: var(--e-2);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-1);
+  padding: 2px var(--e-2);
+  background: var(--acier);
+  color: var(--blanc);
+  font-size: var(--t--1);
+  font-weight: 500;
+}
+
+/* Triangle « lecture » devant le libellé de la pastille vidéo. */
+.badge::before {
+  content: '';
+  width: 0;
+  height: 0;
+  border-top: 0.35em solid transparent;
+  border-bottom: 0.35em solid transparent;
+  border-left: 0.55em solid currentColor;
+}
+
+.highlight {
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}

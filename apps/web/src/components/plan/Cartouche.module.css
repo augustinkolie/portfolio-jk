@@ -1,0 +1,82 @@
+.cartouche {
+  --couleur: var(--acier);
+  --fond: var(--blanc);
+  --ligne: var(--trait);
+  --secondaire: var(--texte-2);
+  border: 2px solid var(--couleur);
+  background: var(--fond);
+  color: var(--couleur);
+}
+
+.plan {
+  --couleur: var(--trait-plan);
+  --fond: transparent;
+  --ligne: var(--trait-sur-plan);
+  --secondaire: var(--trait-plan);
+}
+
+.title {
+  padding: var(--e-2) var(--e-3);
+  border-bottom: 2px solid var(--couleur);
+  font-family: var(--font-titre);
+  font-size: var(--t-1);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.rows {
+  margin: 0;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(7.5rem, 38%) 1fr;
+  border-bottom: 1px solid var(--ligne);
+}
+
+.row dt,
+.row dd {
+  padding: var(--e-2) var(--e-3);
+}
+
+.row dt {
+  border-right: 1px solid var(--ligne);
+  font-size: var(--t--1);
+  line-height: 1.5;
+  color: var(--secondaire);
+  align-self: center;
+}
+
+.row dd {
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--e-3);
+  max-width: none;
+  padding: var(--e-1) var(--e-3);
+  font-size: var(--t--1);
+  font-variant-numeric: tabular-nums;
+  color: var(--secondaire);
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-2);
+}
+
+.squareFull,
+.squareEmpty {
+  width: 0.7em;
+  height: 0.7em;
+  border: 1.5px solid currentColor;
+}
+
+.squareFull {
+  background: currentColor;
+}

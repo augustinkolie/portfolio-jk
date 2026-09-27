@@ -1,0 +1,10 @@
+.container {
+  width: 100%;
+  max-width: calc(var(--largeur-max) + 2 * var(--gouttiere));
+  margin-inline: auto;
+  padding-inline: var(--gouttiere);
+}
+
+.narrow {
+  max-width: calc(var(--mesure) + 2 * var(--gouttiere));
+}

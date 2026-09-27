@@ -1,0 +1,22 @@
+.wrap {
+  display: grid;
+  justify-items: start;
+  gap: var(--e-4);
+  padding-block: var(--section);
+}
+
+.dim {
+  width: min(100%, 24rem);
+}
+
+.text {
+  font-size: var(--t-1);
+  line-height: 1.4;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--e-3) var(--e-4);
+}

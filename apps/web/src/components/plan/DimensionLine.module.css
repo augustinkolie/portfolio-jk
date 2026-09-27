@@ -1,0 +1,191 @@
+.dim {
+  --couleur: var(--acier);
+  --attache: 1.25rem; /* longueur des lignes d'attache */
+  --oblique: 0.8rem;
+  position: relative;
+  color: var(--couleur);
+}
+
+.acier {
+  --couleur: var(--acier);
+}
+
+.plan {
+  --couleur: var(--trait-plan);
+}
+
+/* ─── Valeur ─────────────────────────────────────────────────────────────── */
+
+.value {
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.legende .value {
+  font-size: var(--t--1);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.chiffre .value {
+  font-family: var(--font-titre);
+  font-size: var(--t-4);
+  font-weight: 600;
+}
+
+/* ─── Trait ──────────────────────────────────────────────────────────────── */
+
+.track {
+  position: relative;
+}
+
+.svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.svg line {
+  stroke: currentColor;
+  stroke-width: 1px;
+  vector-effect: non-scaling-stroke;
+}
+
+/* Extrémité : ligne d'attache perpendiculaire + trait oblique à 45°. */
+.end {
+  position: absolute;
+}
+
+.end::before,
+.end::after {
+  content: '';
+  position: absolute;
+  background: currentColor;
+}
+
+/* ─── Horizontal ─────────────────────────────────────────────────────────── */
+
+.horizontal {
+  width: var(--longueur);
+  min-width: 6rem;
+}
+
+.horizontal .value {
+  padding-bottom: var(--e-1);
+  text-align: center;
+}
+
+.horizontal .track {
+  height: var(--attache);
+}
+
+.horizontal .end {
+  top: 0;
+  bottom: 0;
+  width: 0;
+}
+
+.horizontal .start {
+  left: 0;
+}
+
+.horizontal .finish {
+  right: 0;
+}
+
+.horizontal .end::before {
+  top: 0;
+  bottom: 0;
+  left: -0.5px;
+  width: 1px;
+}
+
+.horizontal .end::after {
+  top: 50%;
+  left: calc(var(--oblique) / -2);
+  width: var(--oblique);
+  height: 1.5px;
+  transform: translateY(-50%) rotate(-45deg);
+}
+
+/* ─── Vertical : la valeur se lit de bas en haut, comme sur un plan ─────── */
+
+.vertical {
+  display: flex;
+  height: 100%;
+  min-height: 6rem;
+}
+
+.vertical .value {
+  padding-right: var(--e-1);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  text-align: center;
+}
+
+.vertical .track {
+  width: var(--attache);
+}
+
+.vertical .end {
+  left: 0;
+  right: 0;
+  height: 0;
+}
+
+.vertical .start {
+  top: 0;
+}
+
+.vertical .finish {
+  bottom: 0;
+}
+
+.vertical .end::before {
+  left: 0;
+  right: 0;
+  top: -0.5px;
+  height: 1px;
+}
+
+.vertical .end::after {
+  left: 50%;
+  top: calc(var(--oblique) / -2);
+  width: 1.5px;
+  height: var(--oblique);
+  transform: translateX(-50%) rotate(-45deg);
+}
+
+/* ─── Tracé au chargement (hero uniquement, §3.6) ─────────────────────────── */
+
+@media (prefers-reduced-motion: no-preference) {
+  .draw .svg line {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: trace var(--duree-trace) var(--courbe) var(--delai) forwards;
+  }
+
+  .draw .end {
+    opacity: 0;
+    animation: apparait 160ms linear calc(var(--delai) + var(--duree-trace) * 0.85) forwards;
+  }
+
+  .draw .value {
+    opacity: 0;
+    animation: apparait 240ms linear calc(var(--delai) + var(--duree-trace)) forwards;
+  }
+}
+
+@keyframes trace {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes apparait {
+  to {
+    opacity: 1;
+  }
+}

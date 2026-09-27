@@ -1,0 +1,9 @@
+.page {
+  padding-block: var(--e-5) var(--section);
+}
+
+.lead {
+  margin-block: var(--e-3) var(--e-5);
+  font-size: var(--t-1);
+  line-height: 1.4;
+}

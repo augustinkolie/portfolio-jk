@@ -1,0 +1,115 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--e-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 48rem) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 64rem) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.thumb {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  background: none;
+  overflow: hidden;
+  cursor: zoom-in;
+}
+
+/* ─── Visionneuse ────────────────────────────────────────────────────────── */
+
+.dialog {
+  width: 100vw;
+  max-width: none;
+  height: 100svh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: var(--acier);
+  color: var(--blanc);
+}
+
+.dialog::backdrop {
+  background: var(--acier);
+}
+
+.viewer {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100%;
+}
+
+.bar,
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--e-3);
+  padding: var(--e-2) var(--gouttiere);
+}
+
+.counter {
+  font-weight: 500;
+}
+
+.control {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-2);
+  min-height: 3rem;
+  padding: 0 var(--e-3);
+  border: 1px solid var(--trait-sur-plan);
+  background: none;
+  color: var(--blanc);
+  font-weight: 500;
+}
+
+.control:hover {
+  border-color: var(--blanc);
+}
+
+.stage {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: var(--e-2);
+  min-height: 0;
+  padding-inline: var(--gouttiere);
+  touch-action: pan-y;
+}
+
+.full {
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+}
+
+.full img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.caption {
+  font-size: var(--t--1);
+  text-align: center;
+  margin-inline: auto;
+}

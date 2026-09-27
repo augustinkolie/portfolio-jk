@@ -1,0 +1,137 @@
+.page {
+  padding-block: var(--section);
+}
+
+.lead {
+  margin-top: var(--e-3);
+  font-size: var(--t-1);
+}
+
+.section {
+  margin-top: var(--section);
+  padding-top: var(--e-5);
+  border-top: var(--bordure);
+}
+
+.section > h2 {
+  margin-bottom: var(--e-5);
+}
+
+.muted {
+  color: var(--texte-2);
+  font-size: var(--t--1);
+}
+
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  gap: var(--e-4);
+  padding: 0;
+  list-style: none;
+}
+
+.swatch {
+  display: grid;
+  gap: var(--e-1);
+}
+
+.chip {
+  height: 4rem;
+  border: 1px solid var(--acier);
+}
+
+.scale {
+  display: grid;
+  gap: var(--e-4);
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--e-3);
+}
+
+.planDemo {
+  margin-top: var(--e-4);
+  padding: var(--e-5) var(--e-4);
+}
+
+.form {
+  display: grid;
+  gap: var(--e-4);
+  max-width: 36rem;
+}
+
+.dimDemo {
+  display: grid;
+  gap: var(--e-2);
+  max-width: 40rem;
+}
+
+.dimBox {
+  display: flex;
+  gap: var(--e-2);
+}
+
+.fakePhoto {
+  flex: 1;
+  aspect-ratio: 16 / 9;
+  display: grid;
+  place-items: center;
+  border: var(--bordure-forte);
+  color: var(--texte-2);
+}
+
+.figures {
+  display: grid;
+  gap: var(--e-5);
+  margin-top: var(--e-5);
+  padding: var(--e-6) var(--gouttiere);
+}
+
+.figureLabel {
+  display: block;
+  font-family: var(--font-texte);
+  font-size: var(--t-0);
+  font-weight: 400;
+}
+
+.cartoucheDemo {
+  display: grid;
+  gap: var(--e-4);
+}
+
+@media (min-width: 64rem) {
+  .cartoucheDemo {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+
+  .cartoucheDemo > * {
+    margin-top: 0;
+  }
+}
+
+.axisContent {
+  display: grid;
+  place-items: center;
+  min-height: 16rem;
+  color: var(--texte-2);
+}
+
+.icons {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+  gap: var(--e-4);
+  padding: 0;
+  list-style: none;
+}
+
+.icons li {
+  display: grid;
+  justify-items: start;
+  gap: var(--e-2);
+}

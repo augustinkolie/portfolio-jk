@@ -1,0 +1,24 @@
+/* Vert WhatsApp : couleur de marque du service, reconnue immédiatement. Blanc dessus : 5,4:1. */
+.button {
+  position: fixed;
+  right: var(--e-3);
+  bottom: var(--e-3);
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border: 2px solid var(--acier);
+  background: #0c7a43;
+  color: var(--blanc);
+}
+
+.button:hover {
+  background: var(--acier);
+}
+
+@media print {
+  .button {
+    display: none;
+  }
+}

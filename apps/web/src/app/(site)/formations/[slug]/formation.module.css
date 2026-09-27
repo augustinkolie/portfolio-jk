@@ -1,0 +1,89 @@
+.page {
+  padding-bottom: var(--section);
+}
+
+.header {
+  display: grid;
+  gap: var(--e-3);
+  padding-block: var(--e-5);
+}
+
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e-2);
+  font-size: var(--t--1);
+  color: var(--texte-2);
+}
+
+.summary {
+  font-size: var(--t-1);
+  line-height: 1.4;
+}
+
+/* Mobile : vidéo, puis fiche + inscription, puis programme. */
+.body {
+  display: grid;
+  gap: var(--e-5);
+}
+
+.cover {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 2px solid var(--acier);
+}
+
+.aside {
+  display: grid;
+  align-content: start;
+  gap: var(--e-4);
+}
+
+.enroll {
+  display: grid;
+  gap: var(--e-3);
+  padding: var(--e-4);
+  border: 2px solid var(--acier);
+  background: var(--blanc);
+}
+
+.enrollTitle {
+  font-size: var(--t-2);
+}
+
+.enrollNote {
+  font-size: var(--t--1);
+  color: var(--texte-2);
+}
+
+.program {
+  display: grid;
+  gap: var(--e-3);
+}
+
+/* Grand écran : vidéo et programme à gauche, fiche et inscription à droite.
+   Pas de position fixe : la colonne (formulaire compris) dépasse la hauteur de l'écran. */
+@media (min-width: 64rem) {
+  .body {
+    grid-template-columns: 1fr 26rem;
+    /* 1re ligne à la hauteur du média ; la colonne de droite, plus haute, déborde sur la 2e. */
+    grid-template-rows: auto 1fr;
+    align-items: start;
+    column-gap: var(--e-6);
+  }
+
+  .media {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .program {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .aside {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+}

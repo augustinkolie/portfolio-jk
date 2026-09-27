@@ -1,0 +1,91 @@
+.frame {
+  --bulle: 1.75rem;
+  --axe: var(--beton-fonce);
+  position: relative;
+  padding-top: calc(var(--bulle) + var(--e-3));
+}
+
+/* ─── Axes verticaux (lettres) ───────────────────────────────────────────── */
+
+.columns {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.column {
+  position: relative;
+  width: var(--bulle);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Trait d'axe : tirets longs, comme un axe de structure. */
+.column::after {
+  content: '';
+  flex: 1;
+  width: 0;
+  border-left: 1px dashed var(--axe);
+}
+
+.bubble {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: var(--bulle);
+  height: var(--bulle);
+  border: 1px solid var(--acier);
+  border-radius: 50%; /* seule forme ronde du site : la bulle d'axe est normalisée ainsi */
+  background: var(--surface);
+  font-size: var(--t--1);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--acier);
+}
+
+/* ─── Axes horizontaux (chiffres), à partir de la tablette ───────────────── */
+
+.rows {
+  display: none;
+}
+
+@media (min-width: 48rem) {
+  .withRows {
+    padding-left: calc(var(--bulle) + var(--e-3));
+  }
+
+  .withRows .columns {
+    left: calc(var(--bulle) + var(--e-3));
+  }
+
+  .rows {
+    position: absolute;
+    top: calc(var(--bulle) + var(--e-3));
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    pointer-events: none;
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+  }
+
+  .row::after {
+    content: '';
+    flex: 1;
+    height: 0;
+    border-top: 1px dashed var(--axe);
+  }
+}
+
+.content {
+  position: relative;
+}

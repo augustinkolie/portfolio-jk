@@ -1,0 +1,141 @@
+.loading {
+  padding: var(--e-6) var(--gouttiere);
+  color: var(--texte-2);
+}
+
+.shell {
+  min-height: 100svh;
+}
+
+.top {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 3.5rem;
+  padding: 0 var(--gouttiere);
+  background: var(--acier);
+  color: var(--blanc);
+}
+
+.brand {
+  font-family: var(--font-titre);
+  font-size: var(--t-1);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-2);
+  min-height: 3rem;
+  padding: 0 var(--e-2);
+  border: 0;
+  background: none;
+  color: inherit;
+  font-weight: 500;
+}
+
+.nav {
+  display: none;
+  background: var(--acier);
+  color: var(--blanc);
+}
+
+.nav[data-open='true'] {
+  position: fixed;
+  inset: 3.5rem 0 0;
+  z-index: 19;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.nav ul {
+  margin: 0;
+  padding: var(--e-2) 0;
+  list-style: none;
+}
+
+.nav a {
+  display: flex;
+  align-items: center;
+  min-height: 3rem;
+  padding: 0 var(--gouttiere);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.nav a:hover {
+  background: rgb(255 255 255 / 0.08);
+}
+
+/* Page active : trait blanc à gauche (le jaune signal reste réservé au devis et au focus). */
+.nav a[aria-current='page'] {
+  box-shadow: inset 4px 0 0 var(--blanc);
+  background: rgb(255 255 255 / 0.08);
+}
+
+.navFoot {
+  margin-top: auto;
+  padding: var(--e-4) 0;
+  border-top: 1px solid rgb(255 255 255 / 0.2);
+}
+
+.user {
+  padding: 0 var(--gouttiere);
+  font-size: var(--t--1);
+  opacity: 0.8;
+}
+
+.main {
+  padding: var(--e-5) var(--gouttiere) var(--e-6);
+  max-width: 72rem;
+}
+
+@media (min-width: 64rem) {
+  .shell {
+    display: grid;
+    grid-template-columns: 15rem 1fr;
+    grid-template-rows: auto 1fr;
+  }
+
+  .top {
+    grid-column: 1 / -1;
+  }
+
+  .toggle {
+    display: none;
+  }
+
+  /* Hauteur de la fenêtre ; si le menu est plus long (écran bas, zoom), il défile dans son
+     propre fond au lieu de déborder en blanc sur la page. */
+  .nav,
+  .nav[data-open='true'] {
+    position: sticky;
+    top: 3.5rem;
+    inset: auto;
+    display: flex;
+    flex-direction: column;
+    height: calc(100svh - 3.5rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: rgb(255 255 255 / 0.35) transparent;
+  }
+
+  .nav a {
+    min-height: 2.75rem;
+  }
+
+  .navFoot {
+    padding-block: var(--e-3);
+  }
+
+  .main {
+    padding-inline: var(--e-5);
+  }
+}

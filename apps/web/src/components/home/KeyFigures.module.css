@@ -1,0 +1,23 @@
+.section {
+  padding-block: var(--section);
+}
+
+.list {
+  display: grid;
+  gap: var(--e-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.unit {
+  font-size: 0.6em;
+}
+
+.label {
+  display: block;
+  margin-top: var(--e-1);
+  font-family: var(--font-texte);
+  font-size: var(--t-0);
+  font-weight: 400;
+}

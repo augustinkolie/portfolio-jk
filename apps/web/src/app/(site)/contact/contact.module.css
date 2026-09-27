@@ -1,0 +1,55 @@
+.page {
+  padding-block: var(--e-5) var(--section);
+}
+
+.lead {
+  margin-block: var(--e-3) var(--e-5);
+  font-size: var(--t-1);
+  line-height: 1.4;
+}
+
+.grid {
+  display: grid;
+  gap: var(--e-6);
+}
+
+.h2 {
+  margin-bottom: var(--e-4);
+  font-size: var(--t-2);
+}
+
+.aside {
+  display: grid;
+  align-content: start;
+  gap: var(--e-4);
+}
+
+.aside > h2 {
+  margin-bottom: 0;
+}
+
+/* WhatsApp en tête : canal prioritaire, bouton plein et large. */
+.whatsapp {
+  min-height: 3.5rem;
+  font-size: var(--t-1);
+}
+
+/* Mobile : le contact direct (WhatsApp) passe avant le formulaire. Grand écran : formulaire à gauche. */
+@media (min-width: 64rem) {
+  .grid {
+    grid-template-columns: 3fr 2fr;
+    align-items: start;
+  }
+
+  .formSection {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .aside {
+    grid-column: 2;
+    grid-row: 1;
+    position: sticky;
+    top: var(--e-4);
+  }
+}

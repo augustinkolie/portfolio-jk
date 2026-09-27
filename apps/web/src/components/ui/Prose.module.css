@@ -1,0 +1,36 @@
+.prose {
+  display: grid;
+  align-content: start;
+  gap: var(--e-3);
+}
+
+.prose :global(h2) {
+  margin-top: var(--e-4);
+  font-size: var(--t-2);
+}
+
+.prose :global(h2:first-child) {
+  margin-top: 0;
+}
+
+.prose :global(h3) {
+  margin-top: var(--e-3);
+  font-size: var(--t-1);
+}
+
+.prose :global(ul),
+.prose :global(ol) {
+  max-width: var(--mesure);
+  display: grid;
+  gap: var(--e-1);
+  padding-left: 1.25em;
+}
+
+.prose :global(ul) {
+  list-style: square;
+}
+
+.prose :global(blockquote) {
+  padding-left: var(--e-3);
+  border-left: 2px solid var(--acier);
+}
