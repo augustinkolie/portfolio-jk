@@ -13,6 +13,11 @@ const PATHS = {
   menu: 'M3 7h18M3 12h18M3 17h18',
   plus: 'M12 4v16M4 12h16',
   minus: 'M4 12h16',
+  'chevron-down': 'M5 9l7 7 7-7',
+  bell: 'M6 17V11a6 6 0 0 1 12 0v6l2 2H4zM10 21h4',
+  user: 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0',
+  logout: 'M14 4h6v16h-6M10 8l-4 4 4 4M6 12h10',
+  external: 'M14 4h6v6M20 4l-9 9M18 14v6H4V6h6',
   document: 'M6 3h8l4 4v14H6zM14 3v4h4M9 12h6M9 16h6',
   check: 'M4 12.5l5 5L20 6.5',
   phone:

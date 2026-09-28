@@ -8,7 +8,8 @@ interface AdminData<T> {
   error: string | null;
   loading: boolean;
   reload: () => Promise<void>;
-  setData: (data: T) => void;
+  /** Valeur, ou fonction de mise à jour à partir de la valeur courante (comme useState). */
+  setData: (data: T | ((current: T | null) => T | null)) => void;
 }
 
 /** Charge une ressource de l'admin ; `path` null = ne rien charger. */

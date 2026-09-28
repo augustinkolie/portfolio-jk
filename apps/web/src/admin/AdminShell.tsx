@@ -6,6 +6,7 @@ import { useEffect, useState, type ReactNode } from 'react';
 import { Icon } from '@/components/ui/Icon';
 import { LOGIN_PATH, useAuth } from './AuthProvider';
 import styles from './AdminShell.module.css';
+import { NotificationsMenu, ProfileMenu } from './TopBarMenus';
 
 const NAV = [
   { href: '/admin', label: 'Tableau de bord' },
@@ -23,7 +24,7 @@ const NAV = [
 /** Cadre de l'admin : navigation latérale (tiroir sur mobile) et garde de session. */
 export function AdminShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
-  const { status, user } = useAuth();
+  const { status } = useAuth();
   const [open, setOpen] = useState(false);
 
   useEffect(() => setOpen(false), [pathname]);
@@ -44,16 +45,20 @@ export function AdminShell({ children }: { children: ReactNode }) {
         <Link href="/admin" className={styles.brand}>
           Administration
         </Link>
-        <button
-          type="button"
-          className={styles.toggle}
-          aria-expanded={open}
-          aria-controls="admin-nav"
-          onClick={() => setOpen((o) => !o)}
-        >
-          <Icon name={open ? 'close' : 'menu'} size={22} />
-          <span>{open ? 'Fermer' : 'Menu'}</span>
-        </button>
+        <div className={styles.tools}>
+          <NotificationsMenu />
+          <ProfileMenu />
+          <button
+            type="button"
+            className={styles.toggle}
+            aria-expanded={open}
+            aria-controls="admin-nav"
+            onClick={() => setOpen((o) => !o)}
+          >
+            <Icon name={open ? 'close' : 'menu'} size={22} />
+            <span className={styles.toggleText}>{open ? 'Fermer' : 'Menu'}</span>
+          </button>
+        </div>
       </header>
 
       <nav id="admin-nav" className={styles.nav} data-open={open} aria-label="Administration">
@@ -69,12 +74,6 @@ export function AdminShell({ children }: { children: ReactNode }) {
             );
           })}
         </ul>
-        <div className={styles.navFoot}>
-          <p className={styles.user}>{user?.name}</p>
-          <Link href="/" target="_blank" rel="noopener">
-            Voir le site
-          </Link>
-        </div>
       </nav>
 
       <main id="contenu" className={styles.main}>

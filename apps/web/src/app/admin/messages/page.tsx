@@ -1,7 +1,8 @@
 'use client';
 
 import type { ContactMessageDto, MessageStatus, Paginated } from '@btp/shared';
-import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { Suspense, useEffect, useState } from 'react';
 import { adminFetch } from '@/admin/lib/client';
 import { errorMessage, useAdminData } from '@/admin/lib/useAdminData';
 import { Notice, PageHeader, Pager, Tag, adminStyles as s } from '@/admin/ui';
@@ -19,7 +20,17 @@ const STATUS_LABEL: Record<MessageStatus, string> = { NEW: 'Nouveau', READ: 'Lu'
 const DATE = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'long', timeStyle: 'short' });
 const LIMIT = 20;
 
+// useSearchParams exige une frontière Suspense (page rendue côté client uniquement).
 export default function MessagesPage() {
+  return (
+    <Suspense>
+      <Messages />
+    </Suspense>
+  );
+}
+
+function Messages() {
+  const ouvrir = useSearchParams().get('ouvrir');
   const [status, setStatus] = useState<MessageStatus | ''>('');
   const [page, setPage] = useState(1);
   const [openId, setOpenId] = useState<string | null>(null);
@@ -28,11 +39,14 @@ export default function MessagesPage() {
     `/admin/messages?limit=${LIMIT}&page=${page}${status ? `&status=${status}` : ''}`,
   );
 
-  // Lien depuis le tableau de bord : ?ouvrir=<id>
+  // Lien depuis le tableau de bord ou la cloche : ?ouvrir=<id> (aussi quand on est déjà sur la page).
   useEffect(() => {
-    const id = new URLSearchParams(window.location.search).get('ouvrir');
-    if (id) void open(id);
-  }, []);
+    if (!ouvrir) return;
+    setOpenId(ouvrir);
+    adminFetch<ContactMessageDto>(`/admin/messages/${ouvrir}`) // marque comme lu
+      .then((m) => setData((d) => (d ? { ...d, items: d.items.map((x) => (x.id === m.id ? m : x)) } : d)))
+      .catch((e: unknown) => setFeedback({ tone: 'erreur', text: errorMessage(e) }));
+  }, [ouvrir]);
 
   function replace(updated: ContactMessageDto) {
     if (data) setData({ ...data, items: data.items.map((m) => (m.id === updated.id ? updated : m)) });

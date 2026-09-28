@@ -28,16 +28,37 @@
   text-decoration: none;
 }
 
+.tools {
+  display: flex;
+  align-items: center;
+  gap: var(--e-1);
+}
+
 .toggle {
   display: inline-flex;
+  flex: none;
   align-items: center;
+  justify-content: center;
   gap: var(--e-2);
+  min-width: 3rem;
   min-height: 3rem;
   padding: 0 var(--e-2);
   border: 0;
   background: none;
   color: inherit;
   font-weight: 500;
+}
+
+/* Très petits écrans : l'icône seule, le libellé reste lu par les lecteurs d'écran. */
+@media (max-width: 29.99rem) {
+  .toggleText {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
 }
 
 .nav {
@@ -80,17 +101,6 @@
   background: rgb(255 255 255 / 0.08);
 }
 
-.navFoot {
-  margin-top: auto;
-  padding: var(--e-4) 0;
-  border-top: 1px solid rgb(255 255 255 / 0.2);
-}
-
-.user {
-  padding: 0 var(--gouttiere);
-  font-size: var(--t--1);
-  opacity: 0.8;
-}
 
 .main {
   padding: var(--e-5) var(--gouttiere) var(--e-6);
@@ -123,10 +133,6 @@
 
   .nav a {
     min-height: 2.75rem;
-  }
-
-  .navFoot {
-    padding-block: var(--e-3);
   }
 
   /* Le contenu commence à droite du menu fixe. */

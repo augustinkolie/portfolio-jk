@@ -1,0 +1,245 @@
+/* Le panneau se positionne par rapport à la barre du haut (sticky), aligné sur son bord droit :
+   il reste dans l'écran même sur un téléphone de 320 px. */
+.dropdown {
+  position: static;
+}
+
+.trigger {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--e-2);
+  min-width: 3rem;
+  min-height: 3rem;
+  padding: 0 var(--e-2);
+  border: 0;
+  background: none;
+  color: inherit;
+  font-weight: 500;
+}
+
+.trigger:hover,
+.trigger[aria-expanded='true'] {
+  background: rgb(255 255 255 / 0.1);
+}
+
+.count {
+  position: absolute;
+  top: 0.35rem;
+  right: 0.2rem;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0 0.3rem;
+  border-radius: 0.625rem;
+  /* Rouge alerte : le jaune signal reste réservé au devis et au focus. */
+  background: var(--alerte);
+  color: var(--blanc);
+  box-shadow: 0 0 0 2px var(--acier);
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.25rem;
+  text-align: center;
+}
+
+.panel {
+  position: absolute;
+  top: 100%;
+  right: var(--gouttiere);
+  z-index: 30;
+  width: min(24rem, calc(100vw - 2 * var(--gouttiere)));
+  max-height: calc(100svh - 4.5rem);
+  overflow-y: auto;
+  border: 2px solid var(--acier);
+  background: var(--blanc);
+  color: var(--texte);
+  box-shadow: 0 0.75rem 2rem rgb(0 0 0 / 0.25);
+}
+
+.panel[hidden] {
+  display: none;
+}
+
+.panelTitle {
+  padding: var(--e-3) var(--e-4);
+  border-bottom: 1px solid var(--trait);
+  font-family: var(--font-titre);
+  font-size: var(--t-1);
+  font-weight: 700;
+}
+
+.empty {
+  padding: var(--e-4);
+  color: var(--texte-2);
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.list li + li {
+  border-top: 1px solid var(--trait);
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.15rem var(--e-2);
+  padding: var(--e-3) var(--e-4);
+  text-decoration: none;
+}
+
+.item:hover {
+  background: var(--surface);
+}
+
+.kind {
+  grid-column: 1;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--texte-2);
+}
+
+.kind[data-type='enrollment'] {
+  color: var(--acier);
+}
+
+.itemTime {
+  grid-column: 2;
+  grid-row: 1;
+  font-size: 0.75rem;
+  color: var(--texte-2);
+  white-space: nowrap;
+}
+
+.itemTitle {
+  grid-column: 1 / -1;
+  font-weight: 700;
+}
+
+.itemDetail {
+  grid-column: 1 / -1;
+  font-size: var(--t--1);
+  color: var(--texte-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.panelFoot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e-2) var(--e-4);
+  padding: var(--e-3) var(--e-4);
+  border-top: 1px solid var(--trait);
+  background: var(--surface);
+  font-size: var(--t--1);
+  font-weight: 500;
+}
+
+/* ─── Profil ─────────────────────────────────────────────────────────────── */
+
+.profileTrigger {
+  padding-inline: var(--e-2);
+}
+
+.avatar {
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--blanc);
+  color: var(--acier);
+  font-size: 0.8rem;
+  font-weight: 700;
+  flex: none;
+}
+
+.avatarLarge {
+  width: 3rem;
+  height: 3rem;
+  background: var(--acier);
+  color: var(--blanc);
+  font-size: 1rem;
+}
+
+/* Sur téléphone, l'avatar suffit : la place va au bouton Menu. */
+.profileName {
+  display: none;
+  max-width: 12rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (min-width: 48rem) {
+  .profileName {
+    display: inline;
+  }
+}
+
+.profile {
+  display: grid;
+}
+
+.identity {
+  display: flex;
+  align-items: center;
+  gap: var(--e-3);
+  padding: var(--e-4);
+  border-bottom: 1px solid var(--trait);
+  min-width: 0;
+}
+
+.identity p {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.email {
+  font-size: var(--t--1);
+  color: var(--texte-2);
+}
+
+.actions {
+  margin: 0;
+  padding: var(--e-2) 0;
+  list-style: none;
+}
+
+.actions a,
+.actions button {
+  display: flex;
+  align-items: center;
+  gap: var(--e-3);
+  width: 100%;
+  min-height: 3rem;
+  padding: 0 var(--e-4);
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-weight: 500;
+  text-align: left;
+  text-decoration: none;
+}
+
+.actions a:hover,
+.actions button:hover:not(:disabled) {
+  background: var(--surface);
+}
+
+.actions li:last-child {
+  margin-top: var(--e-2);
+  padding-top: var(--e-2);
+  border-top: 1px solid var(--trait);
+}
+
+.actions button {
+  color: var(--alerte);
+}

@@ -187,6 +187,26 @@ export interface ContactMessageDto {
   createdAt: string;
 }
 
+/** Cloche de l'admin : ce qui attend une réponse. */
+export interface NotificationItemDto {
+  type: 'message' | 'enrollment';
+  id: string;
+  /** Nom de la personne. */
+  title: string;
+  /** « Inscription : AutoCAD 2D », type de projet ou début du message. */
+  detail: string;
+  createdAt: string;
+}
+
+export interface NotificationsDto {
+  /** Messages non lus + inscriptions nouvelles. */
+  total: number;
+  messages: number;
+  enrollments: number;
+  /** Les plus récents, tous types confondus (8 au plus). */
+  items: NotificationItemDto[];
+}
+
 export interface DashboardDto {
   projects: { published: number; drafts: number };
   messages: { unread: number; latest: ContactMessageDto[] };

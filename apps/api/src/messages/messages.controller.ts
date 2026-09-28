@@ -12,7 +12,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
-import type { ContactMessageDto, DashboardDto, Paginated } from '@btp/shared';
+import type { ContactMessageDto, DashboardDto, NotificationsDto, Paginated } from '@btp/shared';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard.js';
 import {
   CreateContactMessageDto,
@@ -42,6 +42,11 @@ export class AdminMessagesController {
   @Get('dashboard')
   dashboard(): Promise<DashboardDto> {
     return this.messages.dashboard();
+  }
+
+  @Get('notifications')
+  notifications(): Promise<NotificationsDto> {
+    return this.messages.notifications();
   }
 
   @Get('messages')

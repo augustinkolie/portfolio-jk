@@ -3,6 +3,8 @@ import {
   type ContactMessageDto,
   type DashboardDto,
   normalizePhone,
+  type NotificationItemDto,
+  type NotificationsDto,
   type Paginated,
 } from '@btp/shared';
 import { notFound } from '../common/errors.js';
@@ -17,6 +19,14 @@ import type {
 
 function toDto(m: ContactMessage): ContactMessageDto {
   return { ...m, createdAt: m.createdAt.toISOString() };
+}
+
+const NOTIFICATION_ITEMS = 8;
+
+/** Début du message sur une ligne, coupé proprement. */
+function excerpt(text: string, max = 80): string {
+  const line = text.replace(/\s+/g, ' ').trim();
+  return line.length <= max ? line : `${line.slice(0, max - 1).trimEnd()}…`;
 }
 
 @Injectable()
@@ -88,6 +98,44 @@ export class MessagesService {
       messages: { unread, latest: latest.map(toDto) },
       enrollments: { pending: pendingEnrollments },
     };
+  }
+
+  /** Cloche de l'admin : messages non lus et inscriptions nouvelles, les plus récents d'abord. */
+  async notifications(): Promise<NotificationsDto> {
+    const [messages, enrollments, latestMessages, latestEnrollments] = await this.prisma.$transaction([
+      this.prisma.contactMessage.count({ where: { status: 'NEW' } }),
+      this.prisma.enrollment.count({ where: { status: 'NEW' } }),
+      this.prisma.contactMessage.findMany({
+        where: { status: 'NEW' },
+        orderBy: { createdAt: 'desc' },
+        take: NOTIFICATION_ITEMS,
+      }),
+      this.prisma.enrollment.findMany({
+        where: { status: 'NEW' },
+        orderBy: { createdAt: 'desc' },
+        take: NOTIFICATION_ITEMS,
+        include: { course: { select: { title: true } } },
+      }),
+    ]);
+    const items: NotificationItemDto[] = [
+      ...latestMessages.map((m) => ({
+        type: 'message' as const,
+        id: m.id,
+        title: m.name,
+        detail: m.projectType ?? excerpt(m.message),
+        createdAt: m.createdAt.toISOString(),
+      })),
+      ...latestEnrollments.map((e) => ({
+        type: 'enrollment' as const,
+        id: e.id,
+        title: e.name,
+        detail: `Inscription : ${e.course.title}`,
+        createdAt: e.createdAt.toISOString(),
+      })),
+    ]
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+      .slice(0, NOTIFICATION_ITEMS);
+    return { total: messages + enrollments, messages, enrollments, items };
   }
 
   private async findOrFail(id: string): Promise<void> {
