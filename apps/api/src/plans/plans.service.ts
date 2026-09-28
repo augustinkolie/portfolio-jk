@@ -17,7 +17,7 @@ import { toMediaDto } from '../media/media.mapper.js';
 import { MediaService } from '../media/media.service.js';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { RevalidationService, Tags } from '../revalidation/revalidation.service.js';
-import { StorageService } from '../storage/storage.service.js';
+import { StorageService, type StoredFile } from '../storage/storage.service.js';
 import type { CreatePlanDto, UpdatePlanDto } from './dto/plan.dto.js';
 
 const include = { media: { orderBy: { order: 'asc' } } } satisfies Prisma.PlanInclude;
@@ -152,6 +152,24 @@ export class PlansService {
     return this.toAdmin(plan);
   }
 
+  /** PDF d'un plan publié, pour la liseuse du site. */
+  async openPublishedDocument(slug: string): Promise<StoredFile> {
+    const plan = await this.prisma.plan.findFirst({ where: { slug, published: true }, select: { documentKey: true } });
+    return this.openDocumentFile(plan?.documentKey);
+  }
+
+  /** PDF d'un plan, brouillon compris, pour l'aperçu de l'admin. */
+  async openDocument(id: string): Promise<StoredFile> {
+    const plan = await this.prisma.plan.findUnique({ where: { id }, select: { documentKey: true } });
+    return this.openDocumentFile(plan?.documentKey);
+  }
+
+  private async openDocumentFile(key: string | null | undefined): Promise<StoredFile> {
+    const file = key ? await this.storage.open(key) : null;
+    if (!file) throw notFound('Dossier PDF');
+    return file;
+  }
+
   private toSummary(p: PlanRow): PlanSummaryDto {
     const cover = p.media.find((m) => m.kind === 'COVER') ?? p.media[0] ?? null;
     return {
@@ -174,7 +192,8 @@ export class PlansService {
       description: p.description,
       document: p.documentKey
         ? {
-            url: this.storage.publicUrl(p.documentKey),
+            // La version (UUID du fichier) change à chaque remplacement : l'adresse peut être mise en cache.
+            readPath: `/plans/${p.slug}/lecture?v=${p.documentKey.split('/').pop()!.replace(/\.pdf$/, '')}`,
             name: p.documentName ?? 'plan.pdf',
             size: p.documentSize ?? 0,
             pages: p.documentPages,

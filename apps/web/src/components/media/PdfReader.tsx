@@ -15,7 +15,8 @@ function watermarkBackground(text: string): string {
 }
 
 interface PdfReaderProps {
-  url: string;
+  /** Adresse du PDF, ou fonction qui fournit ses octets (aperçu admin, route protégée). */
+  source: string | (() => Promise<ArrayBuffer>);
   title: string;
   /** Texte du filigrane, ex. « © Jérôme Kolié ». */
   watermark: string;
@@ -29,7 +30,11 @@ interface PdfReaderProps {
  * zoom, flèches ← → et touches + / − au clavier. Pas de bouton de téléchargement.
  * pdf.js n'est chargé qu'au premier clic.
  */
-export function PdfReader({ url, title, watermark, children, className }: PdfReaderProps) {
+export function PdfReader({ source, title, watermark, children, className }: PdfReaderProps) {
+  // Une fonction change d'identité à chaque rendu du parent : on la garde de côté.
+  const sourceRef = useRef(source);
+  sourceRef.current = source;
+  const sourceKey = typeof source === 'string' ? source : 'octets';
   const dialog = useRef<HTMLDialogElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
   const stage = useRef<HTMLDivElement>(null);
@@ -58,8 +63,9 @@ export function PdfReader({ url, title, watermark, children, className }: PdfRea
     let cancelled = false;
     (async () => {
       try {
-        const pdfjs = await loadPdfJs();
-        const loaded = await pdfjs.getDocument({ url }).promise;
+        const src = sourceRef.current;
+        const [pdfjs, data] = await Promise.all([loadPdfJs(), typeof src === 'string' ? null : src()]);
+        const loaded = await pdfjs.getDocument(data ? { data: new Uint8Array(data) } : { url: src as string }).promise;
         if (cancelled) {
           void loaded.loadingTask.destroy();
           return;
@@ -76,7 +82,7 @@ export function PdfReader({ url, title, watermark, children, className }: PdfRea
       cancelled = true;
       setStatus((s) => (s === 'loading' ? 'idle' : s));
     };
-  }, [open, url, attempt]); // doc et status volontairement absents : un chargement par ouverture ou essai
+  }, [open, sourceKey, attempt]); // doc et status volontairement absents : un chargement par ouverture ou essai
 
   useEffect(() => () => void doc?.loadingTask.destroy(), [doc]);
 

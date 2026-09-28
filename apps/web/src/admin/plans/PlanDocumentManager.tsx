@@ -2,7 +2,7 @@
 
 import { PDF_MAX_UPLOAD_BYTES, type AdminPlanDto } from '@btp/shared';
 import { useState } from 'react';
-import { adminFetch, uploadMedia, uploadPlanDocument } from '@/admin/lib/client';
+import { adminFetch, adminFetchBytes, uploadMedia, uploadPlanDocument } from '@/admin/lib/client';
 import { formatBytes } from '@/admin/lib/compress';
 import { errorMessage } from '@/admin/lib/useAdminData';
 import styles from '@/admin/training/TeaserManager.module.css';
@@ -131,7 +131,13 @@ export function PlanDocumentManager({
               PDF{doc.pages ? ` · ${doc.pages} page${doc.pages > 1 ? 's' : ''}` : ''} · {formatBytes(doc.size)}
             </span>
           </p>
-          <PdfReader url={doc.url} title={plan.title} watermark={watermark} className={s.linkButton}>
+          <PdfReader
+            key={doc.readPath} // PDF remplacé : nouvelle lecture
+            source={() => adminFetchBytes(`/admin/plans/${plan.id}/document`)}
+            title={plan.title}
+            watermark={watermark}
+            className={s.linkButton}
+          >
             Prévisualiser comme sur le site
           </PdfReader>
           <button type="button" className={`${s.linkButton} ${s.danger}`} onClick={() => void remove()}>

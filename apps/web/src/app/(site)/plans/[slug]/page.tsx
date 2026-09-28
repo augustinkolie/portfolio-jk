@@ -10,7 +10,7 @@ import { Icon } from '@/components/ui/Icon';
 import { Container } from '@/components/ui/Container';
 import { Prose } from '@/components/ui/Prose';
 import { api } from '@/lib/api';
-import { whatsappUrl } from '@/lib/site';
+import { PUBLIC_API_URL, whatsappUrl } from '@/lib/site';
 import styles from './plan.module.css';
 
 /** Poids lisible : « 310 Ko », « 5,2 Mo ». */
@@ -66,7 +66,7 @@ export default async function PlanPage({ params }: PageProps) {
                   </span>
                 </p>
                 <PdfReader
-                  url={pdf.url}
+                  source={`${PUBLIC_API_URL}${pdf.readPath}`}
                   title={plan.title}
                   watermark={`© ${settings.company.name}`}
                   className={styles.docButton}

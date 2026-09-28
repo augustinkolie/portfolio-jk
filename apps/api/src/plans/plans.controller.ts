@@ -7,6 +7,7 @@ import {
   Delete,
   ExceptionFilter,
   Get,
+  Header,
   HttpCode,
   HttpStatus,
   Param,
@@ -14,6 +15,7 @@ import {
   PayloadTooLargeException,
   Post,
   Query,
+  StreamableFile,
   UploadedFile,
   UseFilters,
   UseGuards,
@@ -31,6 +33,7 @@ import type { Response } from 'express';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard.js';
 import { PaginationQueryDto } from '../common/pagination.dto.js';
 import { PublicCache } from '../common/public-cache.js';
+import type { StoredFile } from '../storage/storage.service.js';
 import { CreatePlanDto, UpdatePlanDto } from './dto/plan.dto.js';
 import { PlansService } from './plans.service.js';
 
@@ -71,6 +74,24 @@ export class PlansController {
   findOne(@Param('slug') slug: string): Promise<PlanDetailDto> {
     return this.plans.findPublishedBySlug(slug);
   }
+
+  /** PDF du plan pour la liseuse du site (voir READER_TYPE). */
+  @Get(':slug/lecture')
+  @Header('Cache-Control', 'public, max-age=86400')
+  async read(@Param('slug') slug: string): Promise<StreamableFile> {
+    return readerFile(await this.plans.openPublishedDocument(slug));
+  }
+}
+
+/**
+ * Le PDF est relayé sous un type neutre, sans extension ni nom de fichier : les gestionnaires
+ * de téléchargement très répandus (Internet Download Manager…) capturent sinon toute
+ * réponse « .pdf » / application/pdf et la liseuse ne reçoit rien.
+ */
+const READER_TYPE = 'application/x-btp-plan';
+
+function readerFile({ stream, size }: StoredFile): StreamableFile {
+  return new StreamableFile(stream, { type: READER_TYPE, length: size });
 }
 
 @Controller('admin/plans')
@@ -117,6 +138,13 @@ export class AdminPlansController {
     // multer lit le nom du fichier en latin1 : on le relit en UTF-8 pour garder les accents.
     const name = Buffer.from(file.originalname, 'latin1').toString('utf8');
     return this.plans.setDocument(id, file.buffer, name, pages ? Number.parseInt(pages, 10) : undefined);
+  }
+
+  /** Aperçu dans l'admin, brouillons compris. */
+  @Get(':id/document')
+  @Header('Cache-Control', 'private, no-store')
+  async readDocument(@Param('id') id: string): Promise<StreamableFile> {
+    return readerFile(await this.plans.openDocument(id));
   }
 
   @Delete(':id/document')

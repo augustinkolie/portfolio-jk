@@ -104,6 +104,31 @@ export async function adminFetch<T>(path: string, { method = 'GET', json }: Requ
   return (await res.json()) as T;
 }
 
+/** Fichier brut d'une route protégée (ex. PDF d'un plan en brouillon pour l'aperçu). */
+export async function adminFetchBytes(path: string): Promise<ArrayBuffer> {
+  const send = () =>
+    fetch(`${PUBLIC_API_URL}${path}`, {
+      credentials: 'include',
+      headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {},
+    });
+  let res: Response;
+  try {
+    res = await send();
+    if (res.status === 401) {
+      if (!(await refreshSession())) {
+        onExpired?.();
+        throw new ApiError(401, 'Votre session a expiré. Reconnectez-vous.');
+      }
+      res = await send();
+    }
+  } catch (error) {
+    if (error instanceof ApiError) throw error;
+    throw new ApiError(0, NETWORK_ERROR);
+  }
+  if (!res.ok) throw new ApiError(res.status, messageOf(await res.json().catch(() => null), res.status));
+  return res.arrayBuffer();
+}
+
 export async function login(email: string, password: string): Promise<AuthResponse> {
   const data = await adminFetch<AuthResponse>('/auth/login', { method: 'POST', json: { email, password } });
   accessToken = data.accessToken;

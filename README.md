@@ -81,7 +81,7 @@ Adresse : `http://localhost:3000/admin` (redirige vers `/admin/connexion` sans s
 | Messages | Demandes du formulaire de contact, réponse WhatsApp ou email, statut « traité » |
 | Formations | Formations (AutoCAD, Revit…) : fiche, prix, prochaine session, photo de couverture, extrait vidéo |
 | Inscriptions | Demandes d'inscription aux formations, suivi (nouvelle → contacté → inscrit / annulée), réponse WhatsApp |
-| Plans | Plans de conception en vitrine ; filigrane « © nom de l'entreprise » ajouté automatiquement aux images ; dossier PDF (30 Mo au plus) lu sur le site dans une liseuse intégrée (pdf.js), sans bouton de téléchargement, la page 1 servant d'aperçu |
+| Plans | Plans de conception en vitrine ; filigrane « © nom de l'entreprise » ajouté automatiquement aux images ; dossier PDF (30 Mo au plus) lu sur le site dans une liseuse intégrée (pdf.js, version legacy pour les navigateurs pas à jour), sans bouton de téléchargement, la page 1 servant d'aperçu. La liseuse lit le PDF par `GET /plans/:slug/lecture` (type neutre, sans « .pdf ») : Internet Download Manager et les outils semblables capturent sinon le fichier et la liseuse reste vide |
 | Parcours | Étapes de la frise « À propos » |
 | Domaines | Domaines d'intervention et catégorie de projets associée |
 | Paramètres | Nom, chiffres clés, coordonnées, WhatsApp, réseaux sociaux, photo et présentation du dirigeant |

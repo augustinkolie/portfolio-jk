@@ -70,7 +70,11 @@ export interface EnrollmentDto {
 export const PDF_MAX_UPLOAD_BYTES = 30 * 1024 * 1024;
 
 export interface PlanDocumentDto {
-  url: string;
+  /**
+   * Chemin de lecture sur l'API (« /plans/<slug>/lecture?v=… »), sans extension .pdf ni type
+   * application/pdf : les gestionnaires de téléchargement (IDM…) ne l'interceptent pas.
+   */
+  readPath: string;
   name: string;
   size: number;
   /** Nombre de pages, renseigné par l'admin à l'envoi (lu dans le PDF). */

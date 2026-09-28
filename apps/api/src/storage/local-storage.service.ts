@@ -1,8 +1,9 @@
-import { mkdir, rm, writeFile } from 'node:fs/promises';
+import { createReadStream } from 'node:fs';
+import { mkdir, rm, stat, writeFile } from 'node:fs/promises';
 import { dirname, resolve, sep } from 'node:path';
 import { Injectable } from '@nestjs/common';
 import { AppConfig } from '../config/app-config.js';
-import { StorageService } from './storage.service.js';
+import { StorageService, type StoredFile } from './storage.service.js';
 
 @Injectable()
 export class LocalStorageService extends StorageService {
@@ -17,6 +18,16 @@ export class LocalStorageService extends StorageService {
     const path = this.resolveKey(key);
     await mkdir(dirname(path), { recursive: true });
     await writeFile(path, body);
+  }
+
+  async open(key: string): Promise<StoredFile | null> {
+    const path = this.resolveKey(key);
+    try {
+      const { size, isFile } = await stat(path).then((s) => ({ size: s.size, isFile: s.isFile() }));
+      return isFile ? { stream: createReadStream(path), size } : null;
+    } catch {
+      return null;
+    }
   }
 
   async deletePrefix(prefix: string): Promise<void> {
