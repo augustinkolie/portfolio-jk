@@ -35,6 +35,14 @@ Pages sources :
 
 À remplacer par de vrais extraits des cours de Jérôme Kolié : Admin › Formations › la formation › Extrait vidéo › « Remplacer l'extrait vidéo ».
 
+## PDF de test
+
+Le plan « Villa plain-pied, 3 chambres » a un PDF de test de 2 pages (`plan-test.pdf`, marqué
+« DOCUMENT DE TEST »), dessiné pour l'essai. Son aperçu (page 1) a été ajouté aux images du plan.
+
+À remplacer : Admin › Plans › le plan › Dossier PDF du plan › « Remplacer le PDF », puis, dans
+« Images du plan », supprimer l'image « Plan « Villa plain-pied, 3 chambres », page 1 » de l'essai.
+
 ## Remplacer
 
 Admin › Réalisations › le projet › Photos : ajouter les vraies photos (dont une « Photo principale »),

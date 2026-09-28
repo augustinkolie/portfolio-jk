@@ -66,6 +66,17 @@ export interface EnrollmentDto {
 
 // ─── Plans de conception ─────────────────────────────────────────────────────
 
+/** Dossier PDF d'un plan : 30 Mo au plus. Lu sur le site avec une liseuse intégrée. */
+export const PDF_MAX_UPLOAD_BYTES = 30 * 1024 * 1024;
+
+export interface PlanDocumentDto {
+  url: string;
+  name: string;
+  size: number;
+  /** Nombre de pages, renseigné par l'admin à l'envoi (lu dans le PDF). */
+  pages: number | null;
+}
+
 export interface PlanSummaryDto {
   id: string;
   title: string;
@@ -76,10 +87,13 @@ export interface PlanSummaryDto {
   bedrooms: number | null;
   summary: string;
   cover: MediaDto | null;
+  /** Un dossier PDF est lisible sur la page du plan. */
+  hasDocument: boolean;
 }
 
 export interface PlanDetailDto extends PlanSummaryDto {
   description: string;
+  document: PlanDocumentDto | null;
   media: MediaDto[];
   updatedAt: string;
 }

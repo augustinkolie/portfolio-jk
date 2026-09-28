@@ -150,6 +150,11 @@ model Plan {
   bedrooms    Int?
   summary     String
   description String // HTML nettoyé côté serveur
+  // Dossier PDF du plan, lisible sur le site (clé de stockage, jamais d'URL en base)
+  documentKey   String?
+  documentName  String?
+  documentSize  Int?
+  documentPages Int?
   published   Boolean  @default(false)
   order       Int      @default(0)
   media       Media[]

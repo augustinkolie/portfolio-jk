@@ -21,6 +21,8 @@ export function PlansBrowser({ initial, gridClassName }: { initial: Paginated<Pl
               sizes="(min-width: 64rem) 33vw, (min-width: 48rem) 50vw, 100vw"
               meta={planMeta(p)}
               summary={p.summary}
+              badge={p.hasDocument ? 'Plan PDF à lire' : undefined}
+              badgeKind="document"
             />
           </li>
         ))}

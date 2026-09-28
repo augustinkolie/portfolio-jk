@@ -32,6 +32,52 @@
   background: var(--blanc);
 }
 
+/* Bandeau du dossier PDF, au-dessus de l'aperçu. */
+.doc {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--e-3);
+  padding: var(--e-3) var(--e-4);
+  border-bottom: 2px solid var(--acier);
+  background: var(--surface);
+}
+
+.main > .doc:only-child {
+  border-bottom: 0;
+}
+
+.docText {
+  display: grid;
+  flex: 1 1 12rem;
+}
+
+.docTitle {
+  font-weight: 700;
+}
+
+.docMeta {
+  font-size: var(--t--1);
+  color: var(--texte-2);
+}
+
+.docButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  padding: 0 var(--e-4);
+  border: 2px solid var(--acier);
+  background: var(--acier);
+  color: var(--blanc);
+  font-weight: 700;
+}
+
+.docButton:hover {
+  background: var(--blanc);
+  color: var(--acier);
+}
+
 .aside {
   display: grid;
   align-content: start;

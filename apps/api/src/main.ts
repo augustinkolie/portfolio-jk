@@ -20,7 +20,12 @@ async function bootstrap(): Promise<void> {
     }),
   );
   app.use(cookieParser());
-  app.enableCors({ origin: config.webOrigin, credentials: true });
+  app.enableCors({
+    origin: config.webOrigin,
+    credentials: true,
+    // La liseuse PDF du site lit les dossiers de plans par morceaux (requêtes Range).
+    exposedHeaders: ['Accept-Ranges', 'Content-Range', 'Content-Length'],
+  });
   app.useGlobalPipes(
     new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }),
   );

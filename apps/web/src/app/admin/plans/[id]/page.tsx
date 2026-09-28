@@ -1,10 +1,11 @@
 'use client';
 
-import type { AdminPlanDto } from '@btp/shared';
+import type { AdminPlanDto, SiteSettings } from '@btp/shared';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { adminFetch } from '@/admin/lib/client';
 import { errorMessage, useAdminData } from '@/admin/lib/useAdminData';
+import { PlanDocumentManager } from '@/admin/plans/PlanDocumentManager';
 import { PlanForm, toPlanPayload } from '@/admin/plans/PlanForm';
 import { PhotoManager } from '@/admin/projects/PhotoManager';
 import { Notice, PageHeader, Panel, Tag, adminStyles as s } from '@/admin/ui';
@@ -17,6 +18,7 @@ export default function EditPlanPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
   const { data: plan, error: loadError, setData } = useAdminData<AdminPlanDto>(`/admin/plans/${id}`);
+  const { data: settings } = useAdminData<SiteSettings>('/admin/settings'); // texte du filigrane
   const [feedback, setFeedback] = useState<Feedback>(null);
   const [publishing, setPublishing] = useState(false);
 
@@ -95,6 +97,14 @@ export default function EditPlanPage() {
           kinds={['COVER', 'GALLERY']}
           note="Exports du plan (JPEG ou PNG). Le filigrane « © Jérôme Kolié » est ajouté automatiquement."
           onChange={(media) => setData({ ...plan, media, cover: media.find((m) => m.kind === 'COVER') ?? media[0] ?? null })}
+        />
+      </Panel>
+
+      <Panel title="Dossier PDF du plan" id="pdf">
+        <PlanDocumentManager
+          plan={plan}
+          watermark={`© ${settings?.company.name ?? 'Jérôme Kolié'}`}
+          onChange={(next) => setData({ ...plan, ...next })}
         />
       </Panel>
 

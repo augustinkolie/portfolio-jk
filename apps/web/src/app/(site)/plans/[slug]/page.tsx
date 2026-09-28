@@ -2,14 +2,22 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Gallery } from '@/components/media/Gallery';
+import { PdfReader } from '@/components/media/PdfReader';
 import { ProjectImage } from '@/components/media/ProjectImage';
 import { Cartouche } from '@/components/plan/Cartouche';
 import { Button } from '@/components/ui/Button';
+import { Icon } from '@/components/ui/Icon';
 import { Container } from '@/components/ui/Container';
 import { Prose } from '@/components/ui/Prose';
 import { api } from '@/lib/api';
 import { whatsappUrl } from '@/lib/site';
 import styles from './plan.module.css';
+
+/** Poids lisible : « 310 Ko », « 5,2 Mo ». */
+function weight(bytes: number): string {
+  if (bytes < 1024 * 1024) return `${Math.max(1, Math.round(bytes / 1024))} Ko`;
+  return `${(bytes / 1024 / 1024).toFixed(1).replace('.', ',')} Mo`;
+}
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -29,6 +37,7 @@ export default async function PlanPage({ params }: PageProps) {
   const [plan, settings] = await Promise.all([api.plan((await params).slug), api.settings()]);
   if (!plan) notFound();
   const others = plan.media.filter((m) => m.id !== plan.cover?.id);
+  const pdf = plan.document;
   const { whatsapp } = settings.contact;
 
   return (
@@ -44,9 +53,29 @@ export default async function PlanPage({ params }: PageProps) {
       </Container>
 
       <Container className={styles.body}>
-        {plan.cover && (
+        {(plan.cover || pdf) && (
           <div className={styles.main}>
-            <ProjectImage media={plan.cover} sizes="(min-width: 64rem) 60vw, 100vw" priority />
+            {/* Bandeau au-dessus de l'aperçu : visible sans défiler, même quand le plan est haut. */}
+            {pdf && (
+              <div className={styles.doc}>
+                <Icon name="document" size={32} />
+                <p className={styles.docText}>
+                  <span className={styles.docTitle}>Dossier complet du plan</span>
+                  <span className={styles.docMeta}>
+                    PDF{pdf.pages ? ` · ${pdf.pages} page${pdf.pages > 1 ? 's' : ''}` : ''} · {weight(pdf.size)}
+                  </span>
+                </p>
+                <PdfReader
+                  url={pdf.url}
+                  title={plan.title}
+                  watermark={`© ${settings.company.name}`}
+                  className={styles.docButton}
+                >
+                  Lire le plan
+                </PdfReader>
+              </div>
+            )}
+            {plan.cover && <ProjectImage media={plan.cover} sizes="(min-width: 64rem) 60vw, 100vw" priority />}
           </div>
         )}
 

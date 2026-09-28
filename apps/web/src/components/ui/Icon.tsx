@@ -12,6 +12,8 @@ const PATHS = {
   close: 'M5 5l14 14M19 5L5 19',
   menu: 'M3 7h18M3 12h18M3 17h18',
   plus: 'M12 4v16M4 12h16',
+  minus: 'M4 12h16',
+  document: 'M6 3h8l4 4v14H6zM14 3v4h4M9 12h6M9 16h6',
   check: 'M4 12.5l5 5L20 6.5',
   phone:
     'M5 3.5h4l1.5 5-2.5 1.5a11 11 0 0 0 6 6l1.5-2.5 5 1.5v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5.5a2 2 0 0 1 2-2z',

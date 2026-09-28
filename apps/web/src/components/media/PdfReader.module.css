@@ -1,0 +1,132 @@
+.dialog {
+  width: 100vw;
+  max-width: none;
+  height: 100svh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: var(--acier);
+  color: var(--blanc);
+}
+
+.dialog::backdrop {
+  background: var(--acier);
+}
+
+.viewer {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  height: 100%;
+}
+
+.bar,
+.tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--e-2) var(--e-3);
+  padding: var(--e-2) var(--gouttiere);
+}
+
+.title {
+  min-width: 0;
+  font-family: var(--font-titre);
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.group {
+  display: flex;
+  align-items: center;
+  gap: var(--e-2);
+}
+
+.counter {
+  min-width: 7ch;
+  font-weight: 500;
+  text-align: center;
+}
+
+.control {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--e-2);
+  min-width: 3rem;
+  min-height: 3rem;
+  padding: 0 var(--e-3);
+  border: 1px solid var(--trait-sur-plan);
+  background: none;
+  color: var(--blanc);
+  font-weight: 500;
+}
+
+.control:hover:not(:disabled) {
+  border-color: var(--blanc);
+}
+
+.control:disabled {
+  opacity: 0.4;
+}
+
+/* Sur téléphone, les flèches suffisent. */
+.wide {
+  display: none;
+}
+
+@media (min-width: 40rem) {
+  .wide {
+    display: inline;
+  }
+}
+
+/* Zone de lecture : défile quand on agrandit. Le centrage par marges automatiques
+   évite que le haut ou la gauche d'une page agrandie soient inaccessibles. */
+.stage {
+  display: flex;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: var(--e-2) var(--gouttiere);
+}
+
+.state {
+  display: grid;
+  justify-items: center;
+  gap: var(--e-3);
+  margin: auto;
+  text-align: center;
+}
+
+.sheet {
+  position: relative;
+  margin: auto;
+  flex: none;
+  background: var(--blanc);
+  box-shadow: 0 0 0 1px var(--trait-sur-plan);
+}
+
+.sheet[hidden] {
+  display: none;
+}
+
+.sheet[aria-busy='true'] {
+  opacity: 0.85;
+}
+
+.canvas {
+  display: block;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.watermark {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-repeat: repeat;
+}

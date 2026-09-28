@@ -26,6 +26,11 @@
   border-left: 0.55em solid currentColor;
 }
 
+/* Pastille « Plan PDF à lire » : pas de triangle de lecture. */
+.badge[data-kind='document']::before {
+  content: none;
+}
+
 .highlight {
   font-weight: 500;
   font-variant-numeric: tabular-nums;

@@ -15,19 +15,36 @@ interface TileProps {
   summary?: string;
   /** Pastille posée sur l'image : « Extrait vidéo ». */
   badge?: string;
+  /** Vidéo : triangle « lecture » devant le libellé ; document : libellé seul. */
+  badgeKind?: 'video' | 'document';
   /** Ligne mise en avant sous le titre : prix, prochaine session. */
   highlight?: ReactNode;
   headingLevel?: 'h2' | 'h3';
 }
 
 /** Tuile de liste (formation, plan) : même langage que les tuiles de réalisations. */
-export function Tile({ href, title, cover, sizes, meta, summary, badge, highlight, headingLevel: Heading = 'h2' }: TileProps) {
+export function Tile({
+  href,
+  title,
+  cover,
+  sizes,
+  meta,
+  summary,
+  badge,
+  badgeKind = 'video',
+  highlight,
+  headingLevel: Heading = 'h2',
+}: TileProps) {
   const items = meta.filter(Boolean);
   return (
     <article className={styles.card}>
       <div className={`${styles.media} ${own.media}`}>
         {cover ? <ProjectImage media={cover} sizes={sizes} cover /> : <div className={styles.noPhoto} aria-hidden="true" />}
-        {badge && <span className={own.badge}>{badge}</span>}
+        {badge && (
+          <span className={own.badge} data-kind={badgeKind}>
+            {badge}
+          </span>
+        )}
       </div>
       <div className={styles.caption}>
         <Heading className={styles.title}>

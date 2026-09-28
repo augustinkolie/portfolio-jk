@@ -183,6 +183,25 @@ export function uploadMedia(file: Blob, fields: UploadFields, onProgress: (ratio
   );
 }
 
+/** Dossier PDF d'un plan, avec son nombre de pages lu par pdf.js. */
+export function uploadPlanDocument<T>(
+  planId: string,
+  file: File,
+  pages: number | null,
+  onProgress: (ratio: number) => void,
+): Promise<T> {
+  return xhrUpload<T>(
+    `/admin/plans/${planId}/document`,
+    () => {
+      const form = new FormData();
+      form.append('file', file, file.name);
+      if (pages) form.append('pages', String(pages));
+      return form;
+    },
+    onProgress,
+  );
+}
+
 /** Extrait vidéo d'une formation (envoyé tel quel, sans conversion). */
 export function uploadTeaser<T>(courseId: string, file: File, onProgress: (ratio: number) => void): Promise<T> {
   return xhrUpload<T>(

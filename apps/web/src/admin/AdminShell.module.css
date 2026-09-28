@@ -4,6 +4,7 @@
 }
 
 .shell {
+  --admin-nav: 15rem; /* largeur du menu latéral sur grand écran */
   min-height: 100svh;
 }
 
@@ -97,30 +98,23 @@
 }
 
 @media (min-width: 64rem) {
-  .shell {
-    display: grid;
-    grid-template-columns: 15rem 1fr;
-    grid-template-rows: auto 1fr;
-  }
-
-  .top {
-    grid-column: 1 / -1;
-  }
-
   .toggle {
     display: none;
   }
 
-  /* Hauteur de la fenêtre ; si le menu est plus long (écran bas, zoom), il défile dans son
-     propre fond au lieu de déborder en blanc sur la page. */
+  /* Menu fixé à gauche, sous la barre du haut : il ne bouge pas quand la page défile.
+     S'il est plus long que l'écran (écran bas, zoom), il défile dans son propre fond. */
   .nav,
   .nav[data-open='true'] {
-    position: sticky;
+    position: fixed;
     top: 3.5rem;
-    inset: auto;
+    bottom: 0;
+    left: 0;
+    right: auto;
+    z-index: 19;
+    width: var(--admin-nav);
     display: flex;
     flex-direction: column;
-    height: calc(100svh - 3.5rem);
     overflow-y: auto;
     overscroll-behavior: contain;
     scrollbar-width: thin;
@@ -135,7 +129,9 @@
     padding-block: var(--e-3);
   }
 
+  /* Le contenu commence à droite du menu fixe. */
   .main {
+    margin-left: var(--admin-nav);
     padding-inline: var(--e-5);
   }
 }

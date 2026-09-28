@@ -1,5 +1,13 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import type { AdminPlanDto, Paginated, PlanDetailDto, PlanSummaryDto } from '@btp/shared';
+import { randomUUID } from 'node:crypto';
+import { BadRequestException, Injectable, PayloadTooLargeException } from '@nestjs/common';
+import {
+  type AdminPlanDto,
+  type Paginated,
+  PDF_MAX_UPLOAD_BYTES,
+  type PlanDetailDto,
+  type PlanSummaryDto,
+} from '@btp/shared';
+import { fileTypeFromBuffer } from 'file-type';
 import { notFound } from '../common/errors.js';
 import { paginated, type PaginationQueryDto } from '../common/pagination.dto.js';
 import { sanitizeRichText } from '../common/sanitize.js';
@@ -93,8 +101,55 @@ export class PlansService {
   async remove(id: string): Promise<void> {
     const existing = await this.findFull(id);
     await this.media.deleteFilesFor({ type: 'plan', id });
+    await this.storage.deletePrefix(`plans/${id}`); // dossier PDF
     await this.prisma.plan.delete({ where: { id } });
     if (existing.published) await this.revalidation.revalidate([Tags.plans, Tags.plan(existing.slug)]);
+  }
+
+  /**
+   * Dossier PDF du plan : type réel vérifié (pas seulement l'extension), 30 Mo au plus.
+   * Le nombre de pages est lu par l'admin (pdf.js) lors de la création de l'aperçu.
+   */
+  async setDocument(id: string, file: Buffer, originalName: string, pages?: number): Promise<AdminPlanDto> {
+    const existing = await this.findFull(id);
+    if (file.length > PDF_MAX_UPLOAD_BYTES) {
+      throw new PayloadTooLargeException(
+        `Le PDF dépasse ${PDF_MAX_UPLOAD_BYTES / 1024 / 1024} Mo. Réduisez-le (impression PDF en qualité « standard ») ou séparez-le.`,
+      );
+    }
+    const type = await fileTypeFromBuffer(file);
+    if (type?.mime !== 'application/pdf') {
+      throw new BadRequestException(
+        'Ce fichier n’est pas un PDF. Pour un fichier Word, Excel ou AutoCAD, exportez-le d’abord en PDF.',
+      );
+    }
+    const key = `plans/${id}/plan-${randomUUID()}.pdf`;
+    await this.storage.put(key, file, 'application/pdf');
+    const plan = await this.prisma.plan.update({
+      where: { id },
+      data: {
+        documentKey: key,
+        documentName: cleanFileName(originalName),
+        documentSize: file.length,
+        documentPages: pages && pages > 0 && pages < 10_000 ? Math.round(pages) : null,
+      },
+      include,
+    });
+    if (existing.documentKey) await this.storage.deletePrefix(existing.documentKey);
+    if (plan.published) await this.revalidation.revalidate([Tags.plans, Tags.plan(plan.slug)]);
+    return this.toAdmin(plan);
+  }
+
+  async removeDocument(id: string): Promise<AdminPlanDto> {
+    const existing = await this.findFull(id);
+    const plan = await this.prisma.plan.update({
+      where: { id },
+      data: { documentKey: null, documentName: null, documentSize: null, documentPages: null },
+      include,
+    });
+    if (existing.documentKey) await this.storage.deletePrefix(existing.documentKey);
+    if (plan.published) await this.revalidation.revalidate([Tags.plans, Tags.plan(plan.slug)]);
+    return this.toAdmin(plan);
   }
 
   private toSummary(p: PlanRow): PlanSummaryDto {
@@ -109,6 +164,7 @@ export class PlansService {
       bedrooms: p.bedrooms,
       summary: p.summary,
       cover: cover ? toMediaDto(cover, this.storage) : null,
+      hasDocument: p.documentKey !== null,
     };
   }
 
@@ -116,6 +172,14 @@ export class PlansService {
     return {
       ...this.toSummary(p),
       description: p.description,
+      document: p.documentKey
+        ? {
+            url: this.storage.publicUrl(p.documentKey),
+            name: p.documentName ?? 'plan.pdf',
+            size: p.documentSize ?? 0,
+            pages: p.documentPages,
+          }
+        : null,
       media: p.media.map((m) => toMediaDto(m, this.storage)),
       updatedAt: p.updatedAt.toISOString(),
     };
@@ -137,4 +201,11 @@ export class PlansService {
       return found !== null && found.id !== exceptId;
     });
   }
+}
+
+/** Nom affiché du fichier : sans chemin, sans caractères de contrôle, 120 caractères au plus. */
+function cleanFileName(name: string): string {
+  const base = name.split(/[\\/]/).pop() ?? 'plan.pdf';
+  const clean = base.replace(/[\u0000-\u001f<>:"|?*]/g, '').trim().slice(0, 120);
+  return clean.toLowerCase().endsWith('.pdf') ? clean : `${clean || 'plan'}.pdf`;
 }
